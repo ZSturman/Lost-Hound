@@ -1,0 +1,56 @@
+name: eas-update
+on:
+    push:
+        branches: ["main", "master"]
+    pull_request:
+        branches: ["main", "master"]
+
+jobs:
+    update:
+        name: EAS Update
+        runs-on: ubuntu-latest
+        environment: PRODUCTION
+        steps:
+            - name: Check for EXPO_TOKEN
+              run: |
+                  if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+                    echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+                    exit 1
+                  fi
+
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18.x
+
+            - name: Setup EAS
+              uses: expo/expo-github-action@v8
+              with:
+                  eas-version: latest
+                  token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: Install dependencies
+              run: npm install
+              working-directory: src/client/PFRedback
+
+            - name: Initialise EAS Project
+              run: eas init --id ${{ secrets.EXPO_PROJECT_ID }}
+              working-directory: src/client/PFRedback
+
+            - name: Publish update
+              run: eas update --auto
+              working-directory: src/client/PFRedback
+              env:
+                  GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+                  EXPO_FIREBASE_API_KEY: ${{ secrets.EXPO_FIREBASE_API_KEY }}
+                  EXPO_FIREBASE_AUTH_DOMAIN: ${{ secrets.EXPO_FIREBASE_AUTH_DOMAIN }}
+                  EXPO_FIREBASE_PROJECT_ID: ${{ secrets.EXPO_FIREBASE_PROJECT_ID }}
+                  EXPO_FIREBASE_STORAGE_BUCKET: ${{ secrets.EXPO_FIREBASE_STORAGE_BUCKET }}
+                  EXPO_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.EXPO_FIREBASE_MESSAGING_SENDER_ID }}
+                  EXPO_FIREBASE_APP_ID: ${{ secrets.EXPO_FIREBASE_APP_ID}}
+                  EXPO_FIREBASE_MEASUREMENT_ID: ${{ secrets.EXPO_FIREBASE_MEASUREMENT_ID }}
+                  HOST_URL: ${{ secrets.HOST_URL }}
+                  PRODUCT_NAME: ${{ secrets.PRODUCT_NAME }}

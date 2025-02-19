@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env*.local
+
+# Build outputs
+dist/
+build/
+web-build/
+
+# Debug logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# IDE and OS files
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# Typescript
+*.tsbuildinfo
+
+# Backup files
+*.backup
+*-backup*
+
+# Expo
+.expo/
+
+# Native files
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+
+docs/
+data/
