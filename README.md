@@ -151,7 +151,7 @@ expo --version
 ### Clone the repository
 To start, you need to clone the project to your local machine:
   ```sh
-  git clone [https://github.com/ZSturman/Lost-Hound](https://github.com/ZSturman/Lost-Hound)
+  git clone https://github.com/ZSturman/Lost-Hound
   ```
 
 ### Prerequisites
